@@ -6,6 +6,11 @@ const FruitMachine = () => {
   const [loading, setLoading] = useState(false);
 
   const handlePlay = async () => {
+    if (result && result.remainingMoney === 0) {
+      alert("You have no remaining money to play.");
+      return;
+    }
+  
     setLoading(true);
     const response = await fetch("http://localhost:8080/api/game/play", {
       method: "POST",
@@ -14,12 +19,13 @@ const FruitMachine = () => {
       },
       body: JSON.stringify({ money: result ? result.remainingMoney : 100 }),
     });
-
+  
     const data = await response.json();
     console.log(data);
     setResult(data);
     setLoading(false);
   };
+  
 
   const renderResultMessage = () => {
   if (!result) {
